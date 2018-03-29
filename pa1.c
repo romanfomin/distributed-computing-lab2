@@ -77,17 +77,13 @@ int main(int argc, char** argv){
 
 				sprintf(buf, log_started_fmt, local_proc_id, getpid(), getppid());
 				send_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				// sleep(1);
 				sprintf(buf, log_received_all_started_fmt, local_proc_id);
 				receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				// sleep(1);
 
 				sprintf(buf, log_done_fmt, local_proc_id);
 				send_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				// sleep(1);
 				sprintf(buf, log_received_all_done_fmt, local_proc_id);
 				receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				// sleep(1);
 
 				exit(0);
 			default:
@@ -98,15 +94,11 @@ int main(int argc, char** argv){
 	if(close_unneccessary_fd(fd_matrix, N, PARENT_ID) == -1){
 		exit(1);
 	}
-
-	// sleep(2);
 	sprintf(buf, log_received_all_started_fmt, local_proc_id);
 	receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-	// sleep(2);
 
 	sprintf(buf, log_received_all_done_fmt, local_proc_id);
 	receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-	// sleep(2);
 
 	for (i = 0; i < N; i++){
 		wait(&pid);
@@ -158,7 +150,7 @@ int receive(void * self, local_id from, Message * msg){
 	if(!msg->s_header.s_type == selfrecieve->msg_type){
 		return -1;
 	}
-	// printf("Process %i received for message from process %i\n", to, from);
+	// printf("Process %i received message from process %i\n", to, from);
 	return 0;
 }
 
@@ -172,7 +164,7 @@ int write_to_events_log(int fd, char* buf, int length){
 		printf("Error: cannot write to %s\n", events_log);
 		return -1;
 	}
-	printf("%s\n", buf);
+	printf("%s", buf);
 	return 0;
 }
 
