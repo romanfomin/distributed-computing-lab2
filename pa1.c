@@ -77,17 +77,17 @@ int main(int argc, char** argv){
 
 				sprintf(buf, log_started_fmt, local_proc_id, getpid(), getppid());
 				send_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sleep(1);
+				// sleep(1);
 				sprintf(buf, log_received_all_started_fmt, local_proc_id);
 				receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sleep(1);
+				// sleep(1);
 
 				sprintf(buf, log_done_fmt, local_proc_id);
 				send_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sleep(1);
+				// sleep(1);
 				sprintf(buf, log_received_all_done_fmt, local_proc_id);
 				receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sleep(1);
+				// sleep(1);
 
 				exit(0);
 			default:
@@ -99,14 +99,14 @@ int main(int argc, char** argv){
 		exit(1);
 	}
 
-	sleep(2);
+	// sleep(2);
 	sprintf(buf, log_received_all_started_fmt, local_proc_id);
 	receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-	sleep(2);
+	// sleep(2);
 
 	sprintf(buf, log_received_all_done_fmt, local_proc_id);
 	receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-	sleep(2);
+	// sleep(2);
 
 	for (i = 0; i < N; i++){
 		wait(&pid);
@@ -239,10 +239,10 @@ int send_multicast(void * self, const Message * msg){
 		if(i == src){
 			continue;
 		}
-		if(send(self, i, msg) == -1){
+		if(write_to_events_log(selfSend->log_fd, (char*)msg->s_payload, msg->s_header.s_payload_len) == -1){
 			return -1;
 		}
-		if(write_to_events_log(selfSend->log_fd, (char*)msg->s_payload, msg->s_header.s_payload_len) == -1){
+		if(send(self, i, msg) == -1){
 			return -1;
 		}
 

@@ -1,42 +1,25 @@
-Process 1 (pid 10181, parent 10180) has STARTED
-Process 1 (pid 10181, parent 10180) has STARTED
-Process 1 (pid 10181, parent 10180) has STARTED
-Process 1 (pid 10181, parent 10180) has STARTED
-Process 2 (pid 10182, parent 10180) has STARTED
-Process 2 (pid 10182, parent 10180) has STARTED
-Process 2 (pid 10182, parent 10180) has STARTED
-Process 2 (pid 10182, parent 10180) has STARTED
-Process 3 (pid 10183, parent 10180) has STARTED
-Process 3 (pid 10183, parent 10180) has STARTED
-Process 3 (pid 10183, parent 10180) has STARTED
-Process 3 (pid 10183, parent 10180) has STARTED
-Process 4 (pid 10184, parent 10180) has STARTED
-Process 4 (pid 10184, parent 10180) has STARTED
-Process 4 (pid 10184, parent 10180) has STARTED
-Process 4 (pid 10184, parent 10180) has STARTED
+Process 1 (pid 20209, parent 20208) has STARTED
+Process 1 (pid 20209, parent 20208) has STARTED
+Process 1 (pid 20209, parent 20208) has STARTED
+Process 2 (pid 20210, parent 20208) has STARTED
+Process 2 (pid 20210, parent 20208) has STARTED
+Process 2 (pid 20210, parent 20208) has STARTED
+Process 3 (pid 20211, parent 20208) has STARTED
+Process 3 (pid 20211, parent 20208) has STARTED
+Process 0 received all STARTED messages
+Process 3 (pid 20211, parent 20208) has STARTED
 Process 1 received all STARTED messages
 Process 2 received all STARTED messages
+Process 2 has DONE its work
+Process 1 has DONE its work
+Process 2 has DONE its work
+Process 2 has DONE its work
+Process 1 has DONE its work
+Process 1 has DONE its work
 Process 3 received all STARTED messages
-Process 4 received all STARTED messages
-Process 0 received all STARTED messages
-Process 1 has DONE its work
-Process 1 has DONE its work
-Process 1 has DONE its work
-Process 1 has DONE its work
-Process 2 has DONE its work
-Process 2 has DONE its work
-Process 2 has DONE its work
-Process 2 has DONE its work
 Process 3 has DONE its work
 Process 3 has DONE its work
+Process 0 received all DONE messages
 Process 3 has DONE its work
-Process 3 has DONE its work
-Process 4 has DONE its work
-Process 4 has DONE its work
-Process 4 has DONE its work
-Process 4 has DONE its work
 Process 1 received all DONE messages
 Process 2 received all DONE messages
-Process 3 received all DONE messages
-Process 4 received all DONE messages
-Process 0 received all DONE messages
