@@ -1,5 +1,6 @@
 #include "banking.h"
 #include "lab1.h"
+#include "lab2.h"
 #include "ipc.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,13 +28,17 @@ void transfer(void * parent_data, local_id src, local_id dst,
 	}
 }
 
-int do_transfers(int*** matrix, local_id proc_numb, int N, int log_fd, balance_t* balance){
+int do_transfers(int*** matrix, local_id proc_numb, int N, int log_fd, balance_t* balance, BalanceHistory* balanceHistory){
 	Message* msg=(Message*)malloc(sizeof(Message));
 	SelfStruct* selfStruct = (SelfStruct*)malloc(sizeof(SelfStruct));
 	local_id from, to;
 	MessageType msg_type;
 	balance_t amount;
 	TransferOrder* transferOrder = (TransferOrder*)malloc(sizeof(TransferOrder));
+	BalanceState* balanceState = (BalanceState*)malloc(sizeof(BalanceState));
+	timestamp_t time;
+
+	balanceState->s_balance_pending_in = 0;
 
 	selfStruct->N = N;
 	selfStruct->fd_matrix = matrix;
@@ -53,18 +58,76 @@ int do_transfers(int*** matrix, local_id proc_numb, int N, int log_fd, balance_t
 			if(proc_numb == from){
 				amount = transferOrder -> s_amount;
 				(*balance) -= amount;
+
+				balanceState -> s_balance = *balance;
+				time = get_physical_time();
+				balanceState -> s_time = time;
+				balanceHistory->s_history[time] = *balanceState;
+
 				transfer(selfStruct, from, to, amount);
 			}else if(proc_numb == to){
 				receive(selfStruct, from, msg);
 				transferOrder = (TransferOrder*)(msg->s_payload);
 				amount = transferOrder -> s_amount;
 				(*balance) += amount;
-				send(selfStruct, PARENT_ID, create_message(ACK,NULL,0));
+
+				balanceState -> s_balance = *balance;
+				time = get_physical_time();
+				balanceState -> s_time = time;
+				balanceHistory->s_history[time] = *balanceState;
+
+				send(selfStruct, PARENT_ID, create_message(ACK, NULL, 0));
 			}
 		}else if(msg_type == STOP){
 			break;
 		}
 	}
+	balanceHistory->s_id = proc_numb;
+	balanceHistory -> s_history_len = time + 1;
+	complete_history(balanceHistory);
+	return 0;
+}
+
+void complete_history(BalanceHistory* balanceHistory){
+	int i=0;
+	BalanceState* prev;
+
+	for(i = 1; i < balanceHistory->s_history_len; i++){
+		prev = &balanceHistory->s_history[i-1];
+		if(balanceHistory->s_history[i].s_time != i){
+			BalanceState* bs=(BalanceState*)malloc(sizeof(BalanceState));
+			bs->s_balance=prev->s_balance;
+			bs->s_balance_pending_in=0;
+			bs->s_time=i;
+			balanceHistory->s_history[i] = *bs;
+		}
+		printf("%i %i $%d\n",balanceHistory->s_id, prev->s_time, prev->s_balance);
+	}
+
+}
+
+int send_history(int*** matrix, local_id proc_numb, int N, int log_fd, BalanceHistory* balanceHistory){
+	SelfStruct* selfStruct = create_self_struct(matrix, PARENT_ID, N, log_fd);
+	Message* msg = create_message(BALANCE_HISTORY, (char*)balanceHistory, (balanceHistory->s_history_len+1)*sizeof(uint8_t)+sizeof(local_id));
+
+	send(selfStruct, PARENT_ID, msg);
+	return 0;
+}
+
+AllHistory* receive_and_print_all_history(int*** matrix, local_id proc_numb, int N, int log_fd){
+	int i;
+	Message* msg=(Message*)malloc(sizeof(Message));
+	AllHistory* allHistory = (AllHistory*)malloc(sizeof(AllHistory));
+	allHistory->s_history_len = N;
+
+	for(i = 1; i <= N; i++){
+		receive(create_self_struct(matrix, PARENT_ID, N, log_fd), i, msg);
+		BalanceHistory* balanceHistory=(BalanceHistory*)(msg->s_payload);
+		printf("BHlen = %d\n", balanceHistory->s_history_len);
+		allHistory->s_history[i-1] = *((BalanceHistory*)(msg->s_payload));
+	}
+	print_history(allHistory);
+	return allHistory;
 }
 
 // int main(int argc, char * argv[])

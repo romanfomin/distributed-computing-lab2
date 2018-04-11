@@ -1,13 +1,13 @@
-0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
-0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
-0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
-0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
-0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
-0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
+0: process 1 (pid   936, parent   935) has STARTED with balance $10
+0: process 3 (pid   938, parent   935) has STARTED with balance $30
+0: process 2 (pid   937, parent   935) has STARTED with balance $20
+0: process 1 (pid   936, parent   935) has STARTED with balance $10
+0: process 3 (pid   938, parent   935) has STARTED with balance $30
+0: process 2 (pid   937, parent   935) has STARTED with balance $20
 0: process 0 received all STARTED messages
-0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
-0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
-0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
+0: process 1 (pid   936, parent   935) has STARTED with balance $10
+0: process 3 (pid   938, parent   935) has STARTED with balance $30
+0: process 2 (pid   937, parent   935) has STARTED with balance $20
 2: process 1 received all STARTED messages
 2: process 3 received all STARTED messages
 2: process 2 received all STARTED messages
@@ -17,8 +17,8 @@
 4: process 3 received $ 2 from process 2
 6: process 3 transferred $ 1 to process 1
 6: process 1 received $ 1 from process 3
-рири6: process 1 has DONE with balance $10
-ри6: process 2 has DONE with balance $19
+ Я Я6: process 1 has DONE with balance $10
+ Я6: process 2 has DONE with balance $19
 6: process 1 has DONE with balance $10
 6: process 2 has DONE with balance $19
 6: process 3 has DONE with balance $31
@@ -28,6 +28,6 @@
 6: process 0 received all DONE messages
 6: process 3 has DONE with balance $31
 6: process 1 received all DONE messages
-6: process 2 received all DONE messages
 6: process 3 received all DONE messages
+6: process 2 received all DONE messages
 ED messages

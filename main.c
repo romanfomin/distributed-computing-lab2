@@ -23,6 +23,10 @@ int main(int argc, char** argv){
 	int*** fd_matrix;
 	int log_fd;
 	Options* opts=(Options*)malloc(sizeof(Options));
+	BalanceHistory* balanceHistory = (BalanceHistory*)malloc(sizeof(BalanceHistory));
+	AllHistory* allHistory;
+	BalanceState* balanceState = (BalanceState*)malloc(sizeof(BalanceState));
+	timestamp_t time;
 	
 
 	if((log_fd = open(events_log, O_WRONLY)) == -1){
@@ -31,7 +35,7 @@ int main(int argc, char** argv){
 	}
 
 	local_proc_id = PARENT_ID;
-	balance_t balance;
+	balance_t balance = 0;
 
 	opts=get_arg(argc,argv);
 	N=opts->N;
@@ -49,6 +53,12 @@ int main(int argc, char** argv){
 			case 0:
 				local_proc_id = i + 1;
 				balance = opts->values[i];
+
+				balanceState -> s_balance = balance;
+				time = get_physical_time();
+				balanceState -> s_time = time;
+				balanceHistory->s_history[time] = *balanceState;
+
 				if(close_unneccessary_fd(fd_matrix, N, local_proc_id) == -1){
 					exit(1);
 				}
@@ -56,10 +66,13 @@ int main(int argc, char** argv){
 				send_messages(STARTED, local_proc_id, fd_matrix, N, log_fd, balance);
 				receive_messages(STARTED, local_proc_id, fd_matrix, N, log_fd);
 
-				do_transfers(fd_matrix, local_proc_id, N, log_fd, &balance);
+				do_transfers(fd_matrix, local_proc_id, N, log_fd, &balance, balanceHistory);
 
 				send_messages(DONE, local_proc_id, fd_matrix, N, log_fd, balance);
 				receive_messages(DONE, local_proc_id, fd_matrix, N, log_fd);
+
+				send_history(fd_matrix, local_proc_id, N, log_fd, balanceHistory);
+
 
 				exit(0);
 			default:
@@ -77,6 +90,8 @@ int main(int argc, char** argv){
 	send_messages(STOP, PARENT_ID, fd_matrix, N, log_fd, balance);
 
 	receive_messages(DONE, PARENT_ID, fd_matrix, N, log_fd);
+	allHistory = receive_and_print_all_history(fd_matrix, PARENT_ID, N, log_fd);
+
 
 	for (i = 0; i < N; i++){
 		wait(&pid);
