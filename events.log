@@ -1,228 +1,33 @@
-Process 1 (pid 17805, parent 17804) has STARTED
-Process 2 (pid 17806, parent 17804) has STARTED
-Process 3 (pid 17807, parent 17804) has STARTED
-Process 1 (pid 17805, parent 17804) has STARTED
-Process 2 (pid 17806, parent 17804) has STARTED
-Process 0 received all STARTED messages
-Process 3 (pid 17807, parent 17804) has STARTED
-Process 2 (pid 17806, parent 17804) has STARTED
-Process 1 (pid 17805, parent 17804) has STARTED
-Process 3 (pid 17807, parent 17804) has STARTED
-Process 1 received all STARTED messages
-Process 3 received all STARTED messages
-Process 2 received all STARTED messages
-Process 1 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 1 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 0 received all STARTED messages
-Process 1 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 1 received all STARTED messages
-Process 3 received all STARTED messages
-Process 2 received all STARTED messages
-eceived all DONE messages
-3: process 3 received all DONE messages
-, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 1 (pid 16970, parent 16969) has STARTED
-Process 3 (pid 16972, parent 16969) has STARTED
-Process 2 (pid 16971, parent 16969) has STARTED
-Process 4 (pid 16973, parent 16969) has STARTED
-Process 8 (pid 16977, parent 16969) has STARTED
-Process 9 (pid 16978, parent 16969) has STARTED
-Process 5 (pid 16974, parent 16969) has STARTED
-Process 7 (pid 16976, parent 16969) has STARTED
-Process 6 (pid 16975, parent 16969) has STARTED
-Process 10 (pid 16979, parent 16969) has STARTED
-Process 1 received all STARTED messages
-Process 2 received all STARTED messages
-Process 4 received all STARTED messages
-Process 3 received all STARTED messages
-Process 8 received all STARTED messages
-Process 5 received all STARTED messages
-Process 7 received all STARTED messages
-Process 6 received all STARTED messages
-Process 9 received all STARTED messages
-Process 10 received all STARTED messages
-Process 1 has DONE its work
-Process 4 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 8 has DONE its work
-Process 5 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 9 has DONE its work
-Process 10 has DONE its work
-Process 4 has DONE its work
-Process 3 has DONE its work
-Process 1 has DONE its work
-Process 2 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 9 has DONE its work
-Process 10 has DONE its work
-Process 0 received all DONE messages
-Process 4 has DONE its work
-Process 2 has DONE its work
-Process 3 has DONE its work
-Process 1 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 9 has DONE its work
-Process 6 has DONE its work
-Process 10 has DONE its work
-Process 4 has DONE its work
-Process 2 has DONE its work
-Process 3 has DONE its work
-Process 8 has DONE its work
-Process 1 has DONE its work
-Process 5 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 9 has DONE its work
-Process 10 has DONE its work
-Process 4 has DONE its work
-Process 1 has DONE its work
-Process 2 has DONE its work
-Process 3 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 10 has DONE its work
-Process 9 has DONE its work
-Process 1 has DONE its work
-Process 4 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 9 has DONE its work
-Process 6 has DONE its work
-Process 10 has DONE its work
-Process 1 has DONE its work
-Process 4 has DONE its work
-Process 2 has DONE its work
-Process 8 has DONE its work
-Process 5 has DONE its work
-Process 3 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 10 has DONE its work
-Process 9 has DONE its work
-Process 1 has DONE its work
-Process 2 has DONE its work
-Process 5 has DONE its work
-Process 4 has DONE its work
-Process 3 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 10 has DONE its work
-Process 6 has DONE its work
-Process 9 has DONE its work
-Process 1 has DONE its work
-Process 3 has DONE its work
-Process 2 has DONE its work
-Process 4 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 10 has DONE its work
-Process 6 has DONE its work
-Process 9 has DONE its work
-Process 1 has DONE its work
-Process 4 has DONE its work
-Process 2 has DONE its work
-Process 3 has DONE its work
-Process 5 has DONE its work
-Process 8 has DONE its work
-Process 7 has DONE its work
-Process 6 has DONE its work
-Process 10 has DONE its work
-Process 9 has DONE its work
-Process 1 received all DONE messages
-Process 4 received all DONE messages
-Process 5 received all DONE messages
-Process 8 received all DONE messages
-Process 3 received all DONE messages
-Process 2 received all DONE messages
-Process 7 received all DONE messages
-Process 6 received all DONE messages
-Process 9 received all DONE messages
-Process 10 received all DONE messages
+0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
+0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
+0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
+0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
+0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
+0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
+0: process 0 received all STARTED messages
+0: process 1 (pid 25189, parent 25188) has STARTED with balance $10
+0: process 3 (pid 25191, parent 25188) has STARTED with balance $30
+0: process 2 (pid 25190, parent 25188) has STARTED with balance $20
+2: process 1 received all STARTED messages
+2: process 3 received all STARTED messages
+2: process 2 received all STARTED messages
+2: process 1 transferred $ 1 to process 2
+2: process 2 received $ 1 from process 1
+4: process 2 transferred $ 2 to process 3
+4: process 3 received $ 2 from process 2
+6: process 3 transferred $ 1 to process 1
+6: process 1 received $ 1 from process 3
+рири6: process 1 has DONE with balance $10
+ри6: process 2 has DONE with balance $19
+6: process 1 has DONE with balance $10
+6: process 2 has DONE with balance $19
+6: process 3 has DONE with balance $31
+6: process 1 has DONE with balance $10
+6: process 2 has DONE with balance $19
+6: process 3 has DONE with balance $31
+6: process 0 received all DONE messages
+6: process 3 has DONE with balance $31
+6: process 1 received all DONE messages
+6: process 2 received all DONE messages
+6: process 3 received all DONE messages
+ED messages

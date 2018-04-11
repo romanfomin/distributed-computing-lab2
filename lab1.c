@@ -13,6 +13,17 @@
 #include "ipc.h"
 #include "pa2345.h"
 #include "lab1.h"
+#include "banking.h"
+
+SelfStruct* create_self_struct(int*** matrix, local_id proc_numb, int N, int log_fd){
+	SelfStruct* selfStruct = (SelfStruct*)malloc(sizeof(SelfStruct));
+	selfStruct->N = N;
+	selfStruct->fd_matrix = matrix;
+	selfStruct->src = proc_numb;
+	selfStruct->log_fd = log_fd;
+
+	return selfStruct;
+}
 
 Options* get_arg(int argc, char* argv[]){
 	int value, i;
@@ -31,22 +42,21 @@ Options* get_arg(int argc, char* argv[]){
 
 int receive_messages(MessageType msg_type, local_id proc_numb, int*** matrix, int N, int log_fd){
 	int i;
-	SelfRecieve* selfrecieve = (SelfRecieve*)malloc(sizeof(SelfRecieve));
+	SelfStruct* selfStruct = (SelfStruct*)malloc(sizeof(SelfStruct));
 	Message* msg = (Message*)malloc(sizeof(Message));
 	char buf[100];
 
-	selfrecieve->N = N;
-	selfrecieve->fd_matrix = matrix;
-	selfrecieve->to = proc_numb;
-	selfrecieve->log_fd = log_fd;
-	selfrecieve->msg_type = msg_type;
+	selfStruct->N = N;
+	selfStruct->fd_matrix = matrix;
+	selfStruct->src = proc_numb;
+	selfStruct->log_fd = log_fd;
 
 	switch(msg_type){
 		case STARTED:
-			sprintf(buf, log_received_all_started_fmt, proc_numb);
+			sprintf(buf, log_received_all_started_fmt, get_physical_time(), proc_numb);
 			break;
 		case DONE:
-			sprintf(buf, log_received_all_started_fmt, proc_numb);
+			sprintf(buf, log_received_all_done_fmt, get_physical_time(), proc_numb);
 			break;
 		default:
 			break;
@@ -56,7 +66,10 @@ int receive_messages(MessageType msg_type, local_id proc_numb, int*** matrix, in
 		if((i + 1) == proc_numb){
 			continue;
 		}
-		if(receive(selfrecieve, i + 1, msg) == -1){
+		if(receive(selfStruct, i + 1, msg) == -1){
+			return -1;
+		}
+		if(!msg->s_header.s_type == msg_type){
 			return -1;
 		}
 	}
@@ -67,21 +80,34 @@ int receive_messages(MessageType msg_type, local_id proc_numb, int*** matrix, in
 }
 
 int receive(void * self, local_id from, Message * msg){
-	SelfRecieve* selfrecieve = (SelfRecieve*)self;
+	SelfStruct* selfStruct = (SelfStruct*)self;
+	TransferOrder* transferOrder;
 	int fd;
 	local_id to;
 	int*** matrix;
+	char buf[100];
 
-	to = selfrecieve->to;
-	matrix = selfrecieve->fd_matrix;
+	to = selfStruct->src;
+	matrix = selfStruct->fd_matrix;
 	fd = matrix[from][to][0];
 
 	// printf("Process %i waits for message from process %i\n", to, from);
 	if(read(fd, msg, sizeof(Message)) == -1){
 		return -1;
 	}
-	if(!msg->s_header.s_type == selfrecieve->msg_type){
-		return -1;
+	
+	switch(msg->s_header.s_type){
+		case TRANSFER:
+			transferOrder=(TransferOrder*)msg->s_payload;
+			sprintf(buf, log_transfer_in_fmt, get_physical_time(), to, transferOrder->s_amount, from);
+			if(from != 0){
+				if(write_to_events_log(selfStruct->log_fd, buf, strlen(buf)) == -1){
+					return -1;
+				}
+			}
+			break;
+		default:
+			break;
 	}
 	// printf("Process %i received message from process %i\n", to, from);
 	return 0;
@@ -101,29 +127,29 @@ int write_to_events_log(int fd, char* buf, int length){
 	return 0;
 }
 
-int send_messages(MessageType msg_type, local_id proc_numb, int*** matrix, int N, int log_fd){
+int send_messages(MessageType msg_type, local_id proc_numb, int*** matrix, int N, int log_fd, balance_t balance){
 	Message* msg;
-	SelfSend* selfSend = (SelfSend*)malloc(sizeof(SelfSend));
+	SelfStruct* selfStruct = (SelfStruct*)malloc(sizeof(SelfStruct));
 	char buf[100];
 
 
 	switch(msg_type){
 		case STARTED:
-			sprintf(buf, log_started_fmt, proc_numb, getpid(), getppid());
+			sprintf(buf, log_started_fmt, get_physical_time(), proc_numb, getpid(), getppid(), balance);
 			break;
 		case DONE:
-			sprintf(buf, log_done_fmt, proc_numb);
+			sprintf(buf, log_done_fmt, get_physical_time(), proc_numb, balance);
 			break;
 		default:
 			break;
 	}
 
 	msg = create_message(msg_type, buf, strlen(buf));
-	selfSend->N = N;
-	selfSend->fd_matrix = matrix;
-	selfSend->src = proc_numb;
-	selfSend->log_fd = log_fd;
-	if(send_multicast(selfSend, msg) == -1){
+	selfStruct->N = N;
+	selfStruct->fd_matrix = matrix;
+	selfStruct->src = proc_numb;
+	selfStruct->log_fd = log_fd;
+	if(send_multicast(selfStruct, msg) == -1){
 		return -1;
 	}
 	return 0;
@@ -135,7 +161,7 @@ Message* create_message(MessageType msg_type, char* buf, int length){
 	header->s_magic = MESSAGE_MAGIC;
 	header->s_payload_len = length;
 	header->s_type = msg_type;
-	header->s_local_time = time(NULL);
+	header->s_local_time = get_physical_time();
 
 	msg->s_header = *header;
 	memcpy(msg->s_payload, buf, length);
@@ -143,14 +169,30 @@ Message* create_message(MessageType msg_type, char* buf, int length){
 }
 
 int send(void * self, local_id dst, const Message * msg){
-	SelfSend* selfSend = (SelfSend*)self;
+	SelfStruct* selfStruct = (SelfStruct*)self;
 	int fd;
 	local_id src;
 	int*** matrix;
+	TransferOrder* transferOrder;
+	char buf[100];
 
-	src = selfSend->src;
-	matrix = selfSend->fd_matrix;
+	src = selfStruct->src;
+	matrix = selfStruct->fd_matrix;
 	fd = matrix[src][dst][1];
+
+	switch(msg->s_header.s_type){
+		case TRANSFER:
+			transferOrder=(TransferOrder*)msg->s_payload;
+			sprintf(buf, log_transfer_out_fmt, get_physical_time(), src, transferOrder->s_amount, dst);
+			if(src!=0){
+				if(write_to_events_log(selfStruct->log_fd, buf, strlen(buf)) == -1){
+					return -1;
+				}
+			}
+			break;
+		default:
+			break;
+	}
 
 	if(!fd_is_valid(fd)){
 		printf("Error: invalid fd: %i\n", fd);
@@ -166,18 +208,18 @@ int send(void * self, local_id dst, const Message * msg){
 
 int send_multicast(void * self, const Message * msg){
 	int i;
-	SelfSend* selfSend = (SelfSend*)self;
+	SelfStruct* selfStruct = (SelfStruct*)self;
 	local_id src;
 	int N;
 
-	src = selfSend->src;
-	N = selfSend->N;
+	src = selfStruct->src;
+	N = selfStruct->N;
 
 	for(i = 0; i <= N; i++){
 		if(i == src){
 			continue;
 		}
-		if(write_to_events_log(selfSend->log_fd, (char*)msg->s_payload, msg->s_header.s_payload_len) == -1){
+		if(write_to_events_log(selfStruct->log_fd, (char*)msg->s_payload, msg->s_header.s_payload_len) == -1){
 			return -1;
 		}
 		if(send(self, i, msg) == -1){

@@ -12,6 +12,8 @@
 #include "ipc.h"
 #include "pa2345.h"
 #include "lab1.h"
+#include "lab2.h"
+#include "banking.h"
 
 int main(int argc, char** argv){
 
@@ -29,7 +31,7 @@ int main(int argc, char** argv){
 	}
 
 	local_proc_id = PARENT_ID;
-
+	balance_t balance;
 
 	opts=get_arg(argc,argv);
 	N=opts->N;
@@ -46,16 +48,17 @@ int main(int argc, char** argv){
 				exit(1);
 			case 0:
 				local_proc_id = i + 1;
+				balance = opts->values[i];
 				if(close_unneccessary_fd(fd_matrix, N, local_proc_id) == -1){
 					exit(1);
 				}
 
-				send_messages(STARTED, local_proc_id, fd_matrix, N, log_fd);
+				send_messages(STARTED, local_proc_id, fd_matrix, N, log_fd, balance);
 				receive_messages(STARTED, local_proc_id, fd_matrix, N, log_fd);
 
+				do_transfers(fd_matrix, local_proc_id, N, log_fd, &balance);
 
-
-				send_messages(DONE, local_proc_id, fd_matrix, N, log_fd);
+				send_messages(DONE, local_proc_id, fd_matrix, N, log_fd, balance);
 				receive_messages(DONE, local_proc_id, fd_matrix, N, log_fd);
 
 				exit(0);
@@ -68,9 +71,12 @@ int main(int argc, char** argv){
 		exit(1);
 	}
 
-	receive_messages(STARTED, local_proc_id, fd_matrix, N, log_fd);
+	receive_messages(STARTED, PARENT_ID, fd_matrix, N, log_fd);
 
-	receive_messages(DONE, local_proc_id, fd_matrix, N, log_fd);
+	bank_robbery(create_self_struct(fd_matrix, PARENT_ID, N, log_fd), N);
+	send_messages(STOP, PARENT_ID, fd_matrix, N, log_fd, balance);
+
+	receive_messages(DONE, PARENT_ID, fd_matrix, N, log_fd);
 
 	for (i = 0; i < N; i++){
 		wait(&pid);
