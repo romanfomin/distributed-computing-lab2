@@ -7,117 +7,50 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <time.h>
+#include <getopt.h>
 
 #include "common.h"
 #include "ipc.h"
-#include "pa1.h"
+#include "pa2345.h"
+#include "lab1.h"
 
-int get_arg(int argc, char** argv);
-int*** create_matrix(int N);
-int fill_matrix(int*** matrix, int N);
-int close_unneccessary_fd(int*** matrix, int N, int proc_numb);
-int close_fd(int fd);
-int fd_is_valid(int fd);
-int send_messages(MessageType msg_type, char* text, int text_length, local_id proc_numb, int*** matrix, int N, int log_fd);
-Message* create_message(MessageType msg_type, char* buf, int length);
-int write_to_events_log(int fd, char* buf, int length);
-int receive_messages(MessageType msg_type, char* log_text, int text_length, local_id proc_numb, int*** matrix, int N, int log_fd);
-
-typedef struct{
-	int*** fd_matrix;
-	local_id src;
-	int N;
-	int log_fd;
-} SelfSend;
-
-typedef struct{
-	MessageType msg_type;
-	int*** fd_matrix;
-	local_id to;
-	int N;
-	int log_fd;
-} SelfRecieve;
-
-int main(int argc, char** argv){
-
-	int i, N;
-	pid_t pid;
-	local_id local_proc_id;
-	int*** fd_matrix;
-	int log_fd;
-	char buf[100];
-	
-
-	if((log_fd = open(events_log, O_WRONLY)) == -1){
-		printf("Error: cannot open file %s.\n", events_log);
-		exit(1);
-	}
-
-	local_proc_id = PARENT_ID;
-
-	if((N = get_arg(argc,argv)) == -1){
-		exit(1);
-	}
-
-	fd_matrix = create_matrix(N);
-	if(fill_matrix(fd_matrix, N) == -1){
-		exit(1);
-	}
-
-	for(i = 0; i < N; i++){
-		switch(pid = fork()){
-			case -1:
-				printf("Error\n");
-				exit(1);
-			case 0:
-				local_proc_id = i + 1;
-				if(close_unneccessary_fd(fd_matrix, N, local_proc_id) == -1){
-					exit(1);
-				}
-
-				sprintf(buf, log_started_fmt, local_proc_id, getpid(), getppid());
-				send_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sprintf(buf, log_received_all_started_fmt, local_proc_id);
-				receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-
-				sprintf(buf, log_done_fmt, local_proc_id);
-				send_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-				sprintf(buf, log_received_all_done_fmt, local_proc_id);
-				receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-
-				exit(0);
-			default:
-				break;
+Options* get_arg(int argc, char* argv[]){
+	int value, i;
+	Options* opts = (Options*)malloc(sizeof(Options));
+	while((value = getopt(argc,argv,"p:"))!=-1){
+		switch(value){
+			case 'p':
+			opts->N = atoi(optarg);
+			for(i = 0; i < opts->N && optind<argc; i++){
+				opts->values[i] = atoi(argv[optind++]);
+			}
 		}
 	}
-
-	if(close_unneccessary_fd(fd_matrix, N, PARENT_ID) == -1){
-		exit(1);
-	}
-	sprintf(buf, log_received_all_started_fmt, local_proc_id);
-	receive_messages(STARTED, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-
-	sprintf(buf, log_received_all_done_fmt, local_proc_id);
-	receive_messages(DONE, buf, strlen(buf), local_proc_id, fd_matrix, N, log_fd);
-
-	for (i = 0; i < N; i++){
-		wait(&pid);
-	}
-
-	return 0;
+	return opts;
 }
 
-
-int receive_messages(MessageType msg_type, char* log_text, int text_length, local_id proc_numb, int*** matrix, int N, int log_fd){
+int receive_messages(MessageType msg_type, local_id proc_numb, int*** matrix, int N, int log_fd){
 	int i;
 	SelfRecieve* selfrecieve = (SelfRecieve*)malloc(sizeof(SelfRecieve));
 	Message* msg = (Message*)malloc(sizeof(Message));
+	char buf[100];
 
 	selfrecieve->N = N;
 	selfrecieve->fd_matrix = matrix;
 	selfrecieve->to = proc_numb;
 	selfrecieve->log_fd = log_fd;
 	selfrecieve->msg_type = msg_type;
+
+	switch(msg_type){
+		case STARTED:
+			sprintf(buf, log_received_all_started_fmt, proc_numb);
+			break;
+		case DONE:
+			sprintf(buf, log_received_all_started_fmt, proc_numb);
+			break;
+		default:
+			break;
+	}
 
 	for(i = 0; i < N; i++){
 		if((i + 1) == proc_numb){
@@ -127,7 +60,7 @@ int receive_messages(MessageType msg_type, char* log_text, int text_length, loca
 			return -1;
 		}
 	}
-	if(write_to_events_log(log_fd, log_text, text_length) == -1){
+	if(write_to_events_log(log_fd, buf, strlen(buf)) == -1){
 		return -1;
 	}
 	return 0;
@@ -168,11 +101,24 @@ int write_to_events_log(int fd, char* buf, int length){
 	return 0;
 }
 
-int send_messages(MessageType msg_type, char* text, int text_length, local_id proc_numb, int*** matrix, int N, int log_fd){
+int send_messages(MessageType msg_type, local_id proc_numb, int*** matrix, int N, int log_fd){
 	Message* msg;
 	SelfSend* selfSend = (SelfSend*)malloc(sizeof(SelfSend));
+	char buf[100];
 
-	msg = create_message(msg_type, text, text_length);
+
+	switch(msg_type){
+		case STARTED:
+			sprintf(buf, log_started_fmt, proc_numb, getpid(), getppid());
+			break;
+		case DONE:
+			sprintf(buf, log_done_fmt, proc_numb);
+			break;
+		default:
+			break;
+	}
+
+	msg = create_message(msg_type, buf, strlen(buf));
 	selfSend->N = N;
 	selfSend->fd_matrix = matrix;
 	selfSend->src = proc_numb;
@@ -240,15 +186,6 @@ int send_multicast(void * self, const Message * msg){
 
 	}
 	return 0;
-}
-
-int get_arg(int argc, char** argv){
-	int N;
-	if(argc!=3 || strcmp(argv[1],"-p") != 0 || (N = atoi(argv[2])) <= 0){
-		printf("Wrong arguments.\nUsage:\n\tpa1 [-p number] (number > 0)\n");
-		return -1;
-	}
-	return N;
 }
 
 int*** create_matrix(int N){
