@@ -250,7 +250,7 @@ int fill_matrix(int*** matrix, int N){
 	int fd[2];
 	int log_fd;
 
-	if((log_fd = open(pipes_log, O_WRONLY)) == -1){
+	if((log_fd = open(pipes_log, O_WRONLY|O_CREAT|O_TRUNC)) == -1){
 		printf("Error: cannot open file %s.\n", pipes_log);
 		return -1;
 	}

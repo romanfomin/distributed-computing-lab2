@@ -29,7 +29,7 @@ int main(int argc, char** argv){
 	timestamp_t time;
 	
 
-	if((log_fd = open(events_log, O_WRONLY)) == -1){
+	if((log_fd = open(events_log, O_WRONLY|O_CREAT|O_TRUNC)) == -1){
 		printf("Error: cannot open file %s.\n", events_log);
 		exit(1);
 	}
@@ -96,6 +96,6 @@ int main(int argc, char** argv){
 	for (i = 0; i < N; i++){
 		wait(&pid);
 	}
-
+//free
 	return 0;
 }
