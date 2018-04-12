@@ -1,32 +1,50 @@
-0: process 1 (pid  5367, parent  5366) has STARTED with balance $10
-0: process 2 (pid  5368, parent  5366) has STARTED with balance $20
-0: process 3 (pid  5369, parent  5366) has STARTED with balance $30
-0: process 1 (pid  5367, parent  5366) has STARTED with balance $10
-0: process 2 (pid  5368, parent  5366) has STARTED with balance $20
+0: process 1 (pid 18129, parent 18128) has STARTED with balance $10
+0: process 2 (pid 18130, parent 18128) has STARTED with balance $20
+0: process 3 (pid 18131, parent 18128) has STARTED with balance $30
+0: process 4 (pid 18132, parent 18128) has STARTED with balance $40
+0: process 2 (pid 18130, parent 18128) has STARTED with balance $20
+0: process 1 (pid 18129, parent 18128) has STARTED with balance $10
+0: process 3 (pid 18131, parent 18128) has STARTED with balance $30
+0: process 4 (pid 18132, parent 18128) has STARTED with balance $40
 0: process 0 received all STARTED messages
-0: process 3 (pid  5369, parent  5366) has STARTED with balance $30
-0: process 1 (pid  5367, parent  5366) has STARTED with balance $10
-0: process 2 (pid  5368, parent  5366) has STARTED with balance $20
-0: process 3 (pid  5369, parent  5366) has STARTED with balance $30
-2: process 1 received all STARTED messages
-2: process 2 received all STARTED messages
-2: process 3 received all STARTED messages
-2: process 1 transferred $ 1 to process 2
-2: process 2 received $ 1 from process 1
-4: process 2 transferred $ 2 to process 3
-4: process 3 received $ 2 from process 2
-6: process 3 transferred $ 1 to process 1
-6: process 1 received $ 1 from process 3
- È È6: process 1 has DONE with balance $10
- È6: process 2 has DONE with balance $19
-6: process 1 has DONE with balance $10
-6: process 3 has DONE with balance $31
-6: process 2 has DONE with balance $19
-6: process 1 has DONE with balance $10
-6: process 3 has DONE with balance $31
-6: process 0 received all DONE messages
-6: process 2 has DONE with balance $19
-6: process 3 has DONE with balance $31
-6: process 1 received all DONE messages
-6: process 3 received all DONE messages
-6: process 2 received all DONE messages
+0: process 2 (pid 18130, parent 18128) has STARTED with balance $20
+0: process 1 (pid 18129, parent 18128) has STARTED with balance $10
+0: process 3 (pid 18131, parent 18128) has STARTED with balance $30
+0: process 4 (pid 18132, parent 18128) has STARTED with balance $40
+0: process 2 (pid 18130, parent 18128) has STARTED with balance $20
+0: process 1 (pid 18129, parent 18128) has STARTED with balance $10
+0: process 3 (pid 18131, parent 18128) has STARTED with balance $30
+0: process 4 (pid 18132, parent 18128) has STARTED with balance $40
+1: process 2 received all STARTED messages
+1: process 1 received all STARTED messages
+1: process 3 received all STARTED messages
+1: process 4 received all STARTED messages
+1: process 1 transferred $ 1 to process 2
+1: process 2 received $ 1 from process 1
+2: process 2 transferred $ 2 to process 3
+2: process 3 received $ 2 from process 2
+3: process 3 transferred $ 3 to process 4
+3: process 4 received $ 3 from process 3
+4: process 4 transferred $ 1 to process 1
+4: process 1 received $ 1 from process 4
+ê@Íê@Í4: process 1 has DONE with balance $10
+4: process 1 has DONE with balance $10
+ê@Í4: process 2 has DONE with balance $19
+4: process 1 has DONE with balance $10
+ê@Í4: process 2 has DONE with balance $19
+4: process 3 has DONE with balance $29
+4: process 1 has DONE with balance $10
+4: process 4 has DONE with balance $42
+4: process 3 has DONE with balance $29
+4: process 2 has DONE with balance $19
+4: process 4 has DONE with balance $42
+4: process 0 received all DONE messages
+4: process 3 has DONE with balance $29
+4: process 2 has DONE with balance $19
+4: process 4 has DONE with balance $42
+4: process 1 received all DONE messages
+4: process 3 has DONE with balance $29
+4: process 2 received all DONE messages
+4: process 4 has DONE with balance $42
+4: process 3 received all DONE messages
+4: process 4 received all DONE messages

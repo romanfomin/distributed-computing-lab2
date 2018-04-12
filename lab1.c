@@ -66,9 +66,10 @@ int receive_messages(MessageType msg_type, local_id proc_numb, int*** matrix, in
 		if((i + 1) == proc_numb){
 			continue;
 		}
-		if(receive(selfStruct, i + 1, msg) == -1){
-			return -1;
-		}
+		while(receive(selfStruct, i + 1, msg) == -1);
+		// if(receive(selfStruct, i + 1, msg) == -1){
+		// 	return -1;
+		// }
 		if(!msg->s_header.s_type == msg_type){
 			return -1;
 		}
@@ -264,6 +265,8 @@ int fill_matrix(int*** matrix, int N){
 				printf("Error: cannot create pipe.\n");
 				return -1;
 			}
+			fcntl(fd[0], F_SETFL, O_NONBLOCK);
+			fcntl(fd[1], F_SETFL, O_NONBLOCK);
 			matrix[i][j][0]=fd[0];
 			matrix[i][j][1]=fd[1];
 			sprintf(buf,"Pipe %i - %i created, fd0(r) = %i fd1(w) = %i\n", i, j, fd[0], fd[1]);
